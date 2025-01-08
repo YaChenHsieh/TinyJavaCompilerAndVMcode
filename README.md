@@ -188,3 +188,54 @@ The code generation process works by **traversing the parse tree** (often in a *
   JUMPONFALSE <target>
   ```
 ---
+
+## TinyJ Assignment 3 - Virtual Machine Execution
+
+This workflow for **TinyJ Assignment 3**, focusing on the final phase of a compiler: executing compiled code using a virtual machine (VM). The primary goal of this assignment is to implement the **execution phase** of the TinyJ compiler by completing the virtual machine's instruction set.
+
+---
+
+### **Step 1: Load and Read VM Instructions**
+- The VM reads the `vm` file containing the generated instructions.
+- Instructions are stored in `TJ.generatedCode` for execution.
+
+### **Step 2: Initialize VM Components**
+- **Registers:** `PC` (Program Counter), `ESP` (Expression Stack Pointer), `FP` (Frame Pointer), `ASP` (Allocated Stack Pointer).
+- **Stack:** `EXPRSTACK[]` for expression evaluations.
+- **Memory:** `TJ.data[]` for variable storage.
+
+### **Step 3: Execute Instructions (Fetch-Decode-Execute Cycle)**
+**Fetch:**
+- The VM fetches the next instruction using `PC`.
+- `PC` is incremented after reading the instruction.
+
+**Decode:**
+- The instruction is decoded and loaded into `IR` (Instruction Register).
+
+**Execute:**
+- Each instruction executes its `execute()` method (e.g., `ADD`, `PUSHNUM`).
+- Example (`ADDinstr.java`):
+   ```java
+   public void execute() {
+       EXPRSTACK[--ESP-1] += EXPRSTACK[ESP];
+   }
+   ```
+
+### **Step 4: Method Calls and Returns**
+- **Method Handling Instructions:** `CALLSTATMETHOD`, `RETURN`, `INITSTKFRM`.
+- The VM saves the current `PC` when calling a method and restores it upon returning.
+
+### **Step 5: Program Termination**
+- The program terminates when `PC` exceeds the instruction list.
+- If an error occurs (e.g., uninitialized variable access), the VM should display error messages.
+
+---
+
+### ✅ Why a Virtual Machine (VM)?
+The TinyJ compiler uses a **stack-based virtual machine** for educational purposes:
+- **Hardware Abstraction:** No direct interaction with physical CPUs.
+- **Portability:** `vm` files can run on any TinyJ-compatible VM.
+- **Simplified Design:** Easier to understand how code execution works.
+
+
+
